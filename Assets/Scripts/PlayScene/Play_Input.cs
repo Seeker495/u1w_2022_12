@@ -48,8 +48,11 @@ public class Play_Input : MonoBehaviour
                     E_Button(this, ButtonEvent.Speech);
                     m_haveSpeech++;
                 }
-                
                 return;
+            case 3:
+                E_Button(this, ButtonEvent.Report);
+                return;
+
             default:
                 Debug.LogError("Play_InputクラスOnEvent：未設定の引数が使用された");
                 return;

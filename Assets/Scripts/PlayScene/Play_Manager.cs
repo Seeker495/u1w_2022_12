@@ -24,22 +24,28 @@ public class Play_Manager : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// ボタンを押すことで発生するイベントの関数、Dotweenで操作している
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="eve"></param>
     private void Event(object sender,ButtonEvent eve)
     {
         switch (eve)
         {
             case ButtonEvent.Car:
-                Car.transform.DOMove(new Vector3(5, 7, 0), 4f)
+                Car.transform.DOMove(new Vector3(5, 0, 0), 2f)
                 .OnStart(() =>
                 {
                     EventStart(EventState.Start);
                 })
                 .OnKill(() =>
                 {
-                    Car.transform.position=new Vector3(5, -8, 0);
+                    Car.transform.DOMove(new Vector3(5, 8, 0), 4f).SetDelay(5f);
                     EventStart(EventState.Kill);
                 });
                 return;
+
             case ButtonEvent.Siren:
                 Siren_Mark.transform.DOScale(0.2f,1f).SetEase(Ease.OutBounce)
                 .OnStart(() =>
@@ -48,21 +54,34 @@ public class Play_Manager : MonoBehaviour
                 })
                 .OnKill(() =>
                 {
-                    Siren_Mark.transform.DOScale(0f, 1f).SetEase(Ease.OutBounce);
-                    EventStart(EventState.Kill);
+                    Siren_Mark.transform.DOScale(0f, 1f).SetEase(Ease.OutBounce).SetDelay(5f).OnKill(() =>
+                    {
+                        EventStart(EventState.Kill);
+                    });
+                   
                 });
                 return;
+
             case ButtonEvent.Speech:
-                Speech_Mark.transform.DOScale(0.4f, 1f).SetEase(Ease.OutBounce)
-                .OnStart(() =>
+                Speech.transform.DOMove(new Vector3(-3, -4.5f, 0), 2f).OnKill(() =>
                 {
-                    EventStart(EventState.Start);
-                })
-                .OnKill(() =>
-                {
-                    Speech_Mark.transform.DOScale(0f, 1f).SetEase(Ease.OutBounce);
-                    EventStart(EventState.Kill);
+                    Speech_Mark.transform.DOScale(0.4f, 1f).SetEase(Ease.OutBounce)
+                    .OnStart(() =>
+                    {
+                        EventStart(EventState.Start);
+                    })
+                    .OnKill(() =>
+                    {
+                        Speech_Mark.transform.DOScale(0f, 1f).SetEase(Ease.OutBounce).SetDelay(5f)
+                        .OnKill(() =>
+                        {
+                            Speech.transform.DOMove(new Vector3(-3, -8f, 0), 2f);
+                            EventStart(EventState.Kill);
+                        }); 
+                    });
+                    
                 });
+                
                 return;
         }
     }
@@ -75,7 +94,8 @@ public enum ButtonEvent
 {
     Car,
     Speech,
-    Siren
+    Siren,
+    Report
 }
 public enum EventState
 {
