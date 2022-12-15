@@ -12,10 +12,12 @@ public class PlayChara_Audience : MonoBehaviour
     public GameObject TargetMarck;
     public Play_Manager PlayMana;
 
+    Animator ani;
     void Start()
     {
         PlayMana.E_Manager +=
             new EventHandler<E_ManaDate>(CharaEvent);
+        ani = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -90,7 +92,12 @@ public class PlayChara_Audience : MonoBehaviour
                         float posX = UnityEngine.Random.Range(0f, 2f);
                         float posY = UnityEngine.Random.Range(-1.5f, 1.5f);
                         targetpos = new Vector3(posX,posY, 0);
-                        this.transform.DOMove(targetpos, 2f);
+                        this.transform.DOMove(targetpos, 2f).OnKill(() =>
+                        {
+                            ani.SetBool("Reaction", true);
+                            DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
+
+                        }) ;
                     }
                     
                     return;
@@ -101,7 +108,12 @@ public class PlayChara_Audience : MonoBehaviour
                         float posX = UnityEngine.Random.Range(-8f, -6f);
                         float posY = UnityEngine.Random.Range(-1.5f, 2f);
                         targetpos = new Vector3(posX, posY, 0);
-                        this.transform.DOMove(targetpos, 2f);
+                        this.transform.DOMove(targetpos, 2f).OnKill(() =>
+                        {
+                            ani.SetBool("Reaction", true);
+                            DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
+
+                        }); ;
                     }
                     return;
                 case ButtonEvent.Speech:
@@ -111,7 +123,12 @@ public class PlayChara_Audience : MonoBehaviour
                         float posX = UnityEngine.Random.Range(-1.5f, -4.5f);
                         float posY = UnityEngine.Random.Range(-3.5f, -2.5f);
                         targetpos = new Vector3(posX, posY, 0);
-                        this.transform.DOMove(targetpos, 2f);
+                        this.transform.DOMove(targetpos, 2f).OnKill(() =>
+                        {
+                            ani.SetBool("Reaction", true);
+                            DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
+
+                        });
                     }
                     targetpos = new Vector3(-3, -4.5f, 0);
                     return;
@@ -121,11 +138,17 @@ public class PlayChara_Audience : MonoBehaviour
         {
             switch (button)
             {
-                case ButtonEvent.Car:                   
+                case ButtonEvent.Car:
+                    ani.SetBool("Reaction", true);
+                    DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
                     return;
                 case ButtonEvent.Siren:
+                    ani.SetBool("Reaction", true);
+                    DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
                     return;
                 case ButtonEvent.Speech:
+                    ani.SetBool("Reaction", true);
+                    DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
                     return;
             }
         } 
