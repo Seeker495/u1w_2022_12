@@ -269,7 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0186c358e1c230458b5690671f132e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetMarck: {fileID: 7226532213259551122}
+  TargetMarck: {fileID: 7226532214175395912}
+  PlayMana: {fileID: 0}
 --- !u!114 &3708156578713734755
 MonoBehaviour:
   m_ObjectHideFlags: 0

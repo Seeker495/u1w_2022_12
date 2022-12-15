@@ -11,8 +11,11 @@ public class Play_Input : MonoBehaviour
     public EventHandler<ButtonEvent> E_Button;
 　　//それぞれのボタンの押す回数の制限
     int m_haveCar, m_haveSiren, m_haveSpeech;
+    //同時押し防止のbool、Play_Managerで操作
+    public bool isPressed;
     void Start()
     {
+        isPressed = false;
         m_haveCar = 0;
         m_haveSiren = 0;
         m_haveSpeech = 0;
@@ -26,6 +29,7 @@ public class Play_Input : MonoBehaviour
     public void OnEvent(int eve)
     {
         if (E_Button == null) return;
+        if (isPressed) return;
         switch (eve)
         {
             case 0:
