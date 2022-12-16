@@ -6,10 +6,14 @@ using UnityEngine.SceneManagement;
 public static class SoundPlayer
 {
     private static SoundManager SoundManager;
-
     public static void SetUp(GameObject soundObj)
     {
         soundObj.TryGetComponent(out SoundManager);
+    }
+
+    public static void SetVolume(float master,float bgm, float se)
+    {
+        SoundManager.SetVolume(master, bgm, se);
     }
 
     public static void PlayBGM(in eBGM type)

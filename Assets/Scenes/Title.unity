@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_soundManager_Object: {fileID: 5812165010260564879, guid: 729ccdbd3ecf1b147a6d9399e3c5cb55, type: 3}
+  m_ui_Object: {fileID: 4946476755575249938, guid: e26802ccf00ac9841b7c8d6845f7b285, type: 3}
 --- !u!4 &663466490
 Transform:
   m_ObjectHideFlags: 0

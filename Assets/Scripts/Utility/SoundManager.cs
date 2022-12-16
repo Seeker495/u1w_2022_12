@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
@@ -36,6 +37,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private List<AudioPlayer> m_multiSfxPlayer;
 
+    private float m_masterVolume;
+    private float m_bgmVolume;
+    private float m_seVolume;
     // Start is called before the first frame update
     void Awake()
     {
@@ -67,14 +71,14 @@ public class SoundManager : MonoBehaviour
     public void PlayBGM(in eBGM type)
     {
         m_bgmPlayer.audioSource.clip = GetBGM(type);
-        m_bgmPlayer.audioSource.volume = m_bgmPlayer.volume;
+        m_bgmPlayer.audioSource.volume = m_bgmPlayer.volume * m_masterVolume * m_bgmVolume;
         m_bgmPlayer.audioSource.Play();
     }
 
     public void PlaySFX(in eSFX type)
     {
         AudioPlayer sfxPlayer = GetUnUsedPlayer();
-        sfxPlayer.audioSource.PlayOneShot(GetSFX(type), sfxPlayer.volume);
+        sfxPlayer.audioSource.PlayOneShot(GetSFX(type), sfxPlayer.volume * m_masterVolume * m_seVolume);
     }
 
     public AudioPlayer GetUnUsedPlayer()
@@ -82,6 +86,12 @@ public class SoundManager : MonoBehaviour
         return m_multiSfxPlayer.Find(player => player.audioSource.isPlaying == false);
     }
 
+    public void SetVolume(float master, float bgm, float se)
+    {
+        m_masterVolume = master;
+        m_bgmVolume = bgm;
+        m_seVolume = se;
+    }
 }
 
 
