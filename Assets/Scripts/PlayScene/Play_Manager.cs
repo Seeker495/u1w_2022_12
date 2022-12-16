@@ -17,8 +17,7 @@ public class Play_Manager : MonoBehaviour
     {
         Input.E_Button +=
             new System.EventHandler<ButtonEvent>(Event);
-        Timer.E_Timer +=
-            new System.EventHandler<int>(Time);
+        
 
         Siren_Mark.transform.localScale = Vector3.zero;
         Speech_Mark.transform.localScale = Vector3.zero;
@@ -115,14 +114,7 @@ public class Play_Manager : MonoBehaviour
                 return;
         }
     }
-    private void Time(object sender, int time)
-    {
-        //タイマーが0になったとき、ゲームオーバー処理をする
-        if (time < 0)
-        {
-            Debug.Log("げーむおーばー");
-        }
-    }
+    
 } 
 public class E_ManaDate
 {

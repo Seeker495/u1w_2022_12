@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class Play_Audience : MonoBehaviour
 {
@@ -11,13 +13,15 @@ public class Play_Audience : MonoBehaviour
     [SerializeField, TooltipAttribute("民衆の数")] int AudienceCount;
     [SerializeField, TooltipAttribute("反乱者の数")] int ResisterCount;
     [SerializeField, TooltipAttribute("PlayManagerクラス")] Play_Manager Mana;
+    [SerializeField, TooltipAttribute("ゲームクリア時に表示")] GameObject ClearText;
+    [SerializeField, TooltipAttribute("ゲームオーバー時に表示")] GameObject OverText;
 
     //List<GameObject> m_Audiencelist=new List<GameObject>();
     GameObject[] m_Audiencelist;//=new List<GameObject>();
     //List<GameObject> m_Resisterlist = new List<GameObject>();
     GameObject[] m_Resisterlist;// = new List<GameObject>();
 
-    GameObject m_ReportedSetman;
+    public GameObject m_ReportedSetman;
 
     [SerializeField]Play_Input Input;
     [SerializeField] Player_UICounter UICounter;
@@ -25,8 +29,16 @@ public class Play_Audience : MonoBehaviour
 
     int m_nowResister;
     public EventHandler<int> E_Counter;
+    
+    public EventHandler<E_ManaDate> E_Manager;
+    
     void Start()
     {
+        Timer.E_Timer +=
+            new System.EventHandler<int>(TimeOver);
+        ClearText.SetActive(false);
+        OverText.SetActive(false);
+
         m_nowResister = ResisterCount;
         Input.E_Button +=
             new System.EventHandler<ButtonEvent>(Report);
@@ -97,6 +109,46 @@ public class Play_Audience : MonoBehaviour
                 m_ReportedSetman.SetActive(false);
                 m_ReportedSetman = null;
             }
+        }
+        //ゲームクリア時の判定
+        if (m_nowResister <= 0)
+        {
+            Clear();
+        }
+    }
+    /// <summary>
+    /// ゲームクリア時の判定関数
+    /// </summary>
+    void Clear()
+    {
+        ClearText.SetActive(true);
+        ClearText.transform.DOScale(0f, 0f);
+        ClearText.transform.DOScale(1f, 1f).SetEase(Ease.OutBounce)
+            .OnKill(() =>
+            {
+               DOVirtual.DelayedCall(2,()=> SceneManager.LoadScene("Result"));
+            });
+        Paramator.Is_Clear = true;
+    }
+
+    /// <summary>
+    /// ゲームクオーバーの時の判定関数
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="time"></param>
+    private void TimeOver(object sender, int time)
+    {
+        //タイマーが0になったとき、ゲームオーバー処理をする
+        if (time <= 0)
+        {
+            OverText.SetActive(true);
+            OverText.transform.DOScale(0f, 0f);
+            OverText.transform.DOScale(1f, 1f).SetEase(Ease.OutBounce)
+                .OnKill(() =>
+                {
+                    DOVirtual.DelayedCall(2, () => SceneManager.LoadScene("Result"));
+                });
+            Paramator.Is_Clear = false;
         }
     }
 }

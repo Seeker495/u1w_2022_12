@@ -117,7 +117,8 @@ public class PlayChara_Audience : MonoBehaviour
                     }
                     return;
                 case ButtonEvent.Speech:
-                    FieldCheck = (this.transform.position.x > -8 && this.transform.position.x < -6) && (this.transform.position.y > -1.5f && this.transform.position.y < 2f);
+                    FieldCheck = (this.transform.position.x > -4.5f && this.transform.position.x < -1.5f) && (this.transform.position.y > -2.5f && this.transform.position.y < -3.5f);
+                    Debug.Log(FieldCheck);
                     if (!FieldCheck)
                     {
                         float posX = UnityEngine.Random.Range(-1.5f, -4.5f);
