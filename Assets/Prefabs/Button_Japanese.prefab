@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1197851703448596787}
   - component: {fileID: 8997891039501818849}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Button_Japanese
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1922797182501034702}
+  - {fileID: 6434548054458730111}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &8616209369432479962
+--- !u!1001 &3779032742935872619
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -131,8 +131,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5120441130020929155, guid: 76b1407e9a958f84893009f31289f51e, type: 3}
       propertyPath: m_fontSize
-      value: 26.85
+      value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 5120441130020929155, guid: 76b1407e9a958f84893009f31289f51e, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 6d8130c471ad3b040aa5d4e680fa9f56, type: 2}
     - target: {fileID: 5120441130020929155, guid: 76b1407e9a958f84893009f31289f51e, type: 3}
       propertyPath: m_fontColor.b
       value: 0
@@ -148,7 +152,7 @@ PrefabInstance:
     - target: {fileID: 5120441130020929155, guid: 76b1407e9a958f84893009f31289f51e, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 7013100809236614338, guid: 6d8130c471ad3b040aa5d4e680fa9f56, type: 2}
     - target: {fileID: 5120441130020929155, guid: 76b1407e9a958f84893009f31289f51e, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
@@ -247,8 +251,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76b1407e9a958f84893009f31289f51e, type: 3}
---- !u!224 &1922797182501034702 stripped
+--- !u!224 &6434548054458730111 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7871668849189503508, guid: 76b1407e9a958f84893009f31289f51e, type: 3}
-  m_PrefabInstance: {fileID: 8616209369432479962}
+  m_PrefabInstance: {fileID: 3779032742935872619}
   m_PrefabAsset: {fileID: 0}

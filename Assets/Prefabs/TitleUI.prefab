@@ -65,6 +65,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9083084978593651796}
     m_Modifications:
+    - target: {fileID: 3503126308934133337, guid: 4461103df6e7bdc42a66522266a53197, type: 3}
+      propertyPath: m_text
+      value: Setting
+      objectReference: {fileID: 0}
     - target: {fileID: 3745450635722449416, guid: 4461103df6e7bdc42a66522266a53197, type: 3}
       propertyPath: m_Name
       value: Setting_Button
@@ -190,6 +194,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9083084978593651796}
     m_Modifications:
+    - target: {fileID: 3503126308934133337, guid: 4461103df6e7bdc42a66522266a53197, type: 3}
+      propertyPath: m_text
+      value: Game Start
+      objectReference: {fileID: 0}
     - target: {fileID: 3745450635722449416, guid: 4461103df6e7bdc42a66522266a53197, type: 3}
       propertyPath: m_Name
       value: GameStart_Button
@@ -315,6 +323,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9083084978593651796}
     m_Modifications:
+    - target: {fileID: 3503126308934133337, guid: 4461103df6e7bdc42a66522266a53197, type: 3}
+      propertyPath: m_text
+      value: Licence
+      objectReference: {fileID: 0}
     - target: {fileID: 3745450635722449416, guid: 4461103df6e7bdc42a66522266a53197, type: 3}
       propertyPath: m_Name
       value: Licence_Button
