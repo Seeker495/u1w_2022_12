@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using DG.Tweening;
 
@@ -11,10 +12,21 @@ public class PlayChara_Audience : MonoBehaviour
 
     public GameObject TargetMarck;
     public Play_Manager PlayMana;
-
+    String StayAniName;//動かないアニメーションの名前
+    //自身のアニメーション
     Animator ani;
+
+    [SerializeField]bool IsAttract;//現在ギミックに注目しているか
+    [SerializeField] bool HaveMoved;//ランダムな動きをしているか
+
+    Tweener nowMove;
+
+    Vector3 targetpos;
+
     void Start()
     {
+        targetpos = this.transform.position;
+        StayAniName = "Pre_Stay";
         PlayMana.E_Manager +=
             new EventHandler<E_ManaDate>(CharaEvent);
         ani = this.GetComponent<Animator>();
@@ -24,6 +36,31 @@ public class PlayChara_Audience : MonoBehaviour
     void Update()
     {
         
+        //AnimatorStateInfo aniinfo = ani.GetCurrentAnimatorStateInfo(0);
+        if (!IsAttract&&!HaveMoved)
+        {
+            HaveMoved = true;
+            DOVirtual.DelayedCall(1f, () =>
+            {
+                while (true)
+                {                    
+                    targetpos = (Vector2)this.transform.position + UnityEngine.Random.insideUnitCircle;
+                    //キャラの行動範囲を制限、Play_Audienceにある範囲と同じもの
+                    if ((targetpos.x < 2f && targetpos.x > -8f) && (targetpos.y < 3.5f && targetpos.y > -3.5f)) break;
+                }
+                 Move(); 
+            }
+            );
+               
+        }
+ 
+        if (IsAttract&&!ani.GetCurrentAnimatorStateInfo(0).IsName(StayAniName)&& ani.GetCurrentAnimatorStateInfo(0).normalizedTime>=1)
+        {
+            HaveMoved = false;
+            //if (!per.IsAudience) Debug.Log(IsAttract);
+            IsAttract = false;
+            ani.SetBool("Reaction", false);
+        }
     }
     public void OnClick()
     {
@@ -78,62 +115,55 @@ public class PlayChara_Audience : MonoBehaviour
     }
     void CharaMove_Play(ButtonEvent button)
     {
-        Vector3 targetpos=this.transform.position;
+        targetpos=this.transform.position;
+        if (button != ButtonEvent.Report)
+        {
+            //Debug.Log("ASDFGH");
+            IsAttract = true;
+            nowMove.Kill(false);
+        }
         //キャラをイベントに応じた一定範囲内のランダムな位置に移動させる、移動処理をSwitch文以下に書くと動作しない
         if (per.IsAudience)
         {
+            
             bool FieldCheck;
+            float posX;
+            float posY;
             switch (button)
             {
                 case ButtonEvent.Car:
                     FieldCheck = (this.transform.position.x > 0 && this.transform.position.x < 2) && (this.transform.position.y > -1.5f && this.transform.position.y < 1.5f);
-                    if (!FieldCheck)
-                    {
-                        float posX = UnityEngine.Random.Range(0f, 2f);
-                        float posY = UnityEngine.Random.Range(-1.5f, 1.5f);
-                        targetpos = new Vector3(posX,posY, 0);
-                        this.transform.DOMove(targetpos, 2f).OnKill(() =>
-                        {
-                            ani.SetBool("Reaction", true);
-                            DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
-
-                        }) ;
-                    }
                     
+                    posX = UnityEngine.Random.Range(0f, 2f);
+                        posY = UnityEngine.Random.Range(-1.5f, 1.5f);
+                        targetpos = new Vector3(posX,posY, 0);
+                        Move();
+                    //else ani.SetBool("Reaction", true);
+                    //IsAttract = true;
                     return;
                 case ButtonEvent.Siren:
                     FieldCheck = (this.transform.position.x > -8 && this.transform.position.x < -6) && (this.transform.position.y > -1.5f && this.transform.position.y < 2f);
-                    if (!FieldCheck)
-                    {
-                        float posX = UnityEngine.Random.Range(-8f, -6f);
-                        float posY = UnityEngine.Random.Range(-1.5f, 2f);
-                        targetpos = new Vector3(posX, posY, 0);
-                        this.transform.DOMove(targetpos, 2f).OnKill(() =>
-                        {
-                            ani.SetBool("Reaction", true);
-                            DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
-
-                        }); ;
-                    }
+                    
+                    posX = UnityEngine.Random.Range(-8f, -6f);
+                    posY = UnityEngine.Random.Range(-1.5f, 2f);
+                    targetpos = new Vector3(posX, posY, 0);
+                    Move();
+                    //else ani.SetBool("Reaction", true);
+                    //IsAttract = true;
                     return;
                 case ButtonEvent.Speech:
                     FieldCheck = (this.transform.position.x > -4.5f && this.transform.position.x < -1.5f) && (this.transform.position.y > -2.5f && this.transform.position.y < -3.5f);
-                    Debug.Log(FieldCheck);
-                    if (!FieldCheck)
-                    {
-                        float posX = UnityEngine.Random.Range(-1.5f, -4.5f);
-                        float posY = UnityEngine.Random.Range(-3.5f, -2.5f);
+                    
+                    posX = UnityEngine.Random.Range(-1.5f, -4.5f);
+                        posY = UnityEngine.Random.Range(-3.5f, -2.5f);
                         targetpos = new Vector3(posX, posY, 0);
-                        this.transform.DOMove(targetpos, 2f).OnKill(() =>
-                        {
-                            ani.SetBool("Reaction", true);
-                            DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
-
-                        });
-                    }
+                        Move();
+                    //else ani.SetBool("Reaction", true);
+                    //IsAttract = true;
                     targetpos = new Vector3(-3, -4.5f, 0);
                     return;
             }
+            
         }
         else
         {
@@ -141,15 +171,18 @@ public class PlayChara_Audience : MonoBehaviour
             {
                 case ButtonEvent.Car:
                     ani.SetBool("Reaction", true);
-                    DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
+                    //DOVirtual.DelayedCall(1f, () => { ani.SetBool("Reaction", false); });
+                    //IsAttract = true;
                     return;
                 case ButtonEvent.Siren:
                     ani.SetBool("Reaction", true);
-                    DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
+                    //.DelayedCall(1f, () => { ani.SetBool("Reaction", false); });
+                    //IsAttract = true;
                     return;
                 case ButtonEvent.Speech:
                     ani.SetBool("Reaction", true);
-                    DOVirtual.DelayedCall(1f, () => ani.SetBool("Reaction", false));
+                    //DOVirtual.DelayedCall(1f, () => { ani.SetBool("Reaction", false); });
+                    //IsAttract = true;
                     return;
             }
         } 
@@ -180,6 +213,26 @@ public class PlayChara_Audience : MonoBehaviour
                     return;
             }
         }
+    }
+    private void Move()
+    {
+
+        nowMove.Kill();
+        nowMove = this.transform.DOMove(targetpos, 3.5f).OnComplete(() =>
+        {
+            
+            if (IsAttract)
+            {
+                ani.SetBool("Reaction", true);
+                //DOVirtual.DelayedCall(5f, () => { ani.SetBool("Reaction", false); });
+                
+            }
+            else
+            {
+                HaveMoved = false;
+            }
+        });
+        
     }
 }
 public class AudiencePernonality

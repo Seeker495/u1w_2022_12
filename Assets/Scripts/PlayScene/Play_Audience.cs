@@ -47,6 +47,7 @@ public class Play_Audience : MonoBehaviour
         for(int i = 0; i < AudienceCount; i++)
         {
             int index = UnityEngine.Random.Range(0, Audience.Count);
+            //ƒLƒƒƒ‰‚ÌoŒ»”ÍˆÍ‚ð§ŒÀAPlayChara_Audience‚É‚ ‚é”ÍˆÍ‚Æ“¯‚¶‚à‚Ì
             float posX = UnityEngine.Random.Range(-8f, 2f);
             float posY = UnityEngine.Random.Range(-3.5f, 3.5f);
             m_Audiencelist[i]=(Instantiate(Audience[index], new Vector3(posX, posY, 0), Quaternion.identity));
